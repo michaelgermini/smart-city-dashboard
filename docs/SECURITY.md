@@ -490,7 +490,7 @@ class SecurityAlertService {
   private async alertSecurityTeam(message: string, details: any): Promise<void> {
     // Envoi d'alerte par email/SMS
     await this.sendAlert({
-      to: 'security@smartcity-geneva.ch',
+      to: 'michael@germini.info',
       subject: '🚨 Security Alert',
       message: message,
       details: details,
@@ -644,9 +644,9 @@ testssl.sh dashboard.smartcity-geneva.ch
 
 ### Contacts d'Urgence
 
-- **Équipe Sécurité** : security@smartcity-geneva.ch | +41 XX XXX XX XX
-- **Équipe Technique** : tech@smartcity-geneva.ch | +41 XX XXX XX XX
-- **Direction** : direction@smartcity-geneva.ch | +41 XX XXX XX XX
+- **Équipe Sécurité** : michael@germini.info
+- **Équipe Technique** : michael@germini.info
+- **Direction** : michael@germini.info
 - **Autorités** : Police cantonale | 117
 
 ---

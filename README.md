@@ -238,9 +238,9 @@ Nous accueillons les contributions ! Voir notre [guide de contribution](docs/CON
 
 ## 📞 Support
 
-- 📧 **Email** : support@smartcity-geneva.ch
-- 🐛 **Issues** : [GitHub Issues](https://github.com/smartcity-geneva/dashboard/issues)
-- 💬 **Discussions** : [GitHub Discussions](https://github.com/smartcity-geneva/dashboard/discussions)
+- 📧 **Email** : michael@germini.info
+- 🐛 **Issues** : [GitHub Issues](https://github.com/michaelgermini/smart-city-dashboard/issues)
+- 💬 **Discussions** : [GitHub Discussions](https://github.com/michaelgermini/smart-city-dashboard/discussions)
 - 📖 **Documentation** : [docs/](docs/)
 
 ## 🙏 Remerciements

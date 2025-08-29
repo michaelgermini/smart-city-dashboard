@@ -230,9 +230,9 @@ docker-compose exec frontend sh
 ## Support
 
 Pour obtenir de l'aide :
-- 📧 Email : support@smartcity-geneva.ch
+- 📧 Email : michael@germini.info
 - 📖 Documentation : `/docs`
-- 🐛 Issues : [GitHub Issues](https://github.com/smartcity-geneva/dashboard/issues)
+- 🐛 Issues : [GitHub Issues](https://github.com/michaelgermini/smart-city-dashboard/issues)
 
 ## Licence
 

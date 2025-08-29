@@ -35,7 +35,7 @@ Exemples de comportements qui contribuent à créer un environnement positif :
 
 ### Signalement
 
-Les incidents peuvent être signalés en contactant : conduct@smartcity-geneva.ch
+Les incidents peuvent être signalés en contactant : michael@germini.info
 
 ## 🚀 Comment Contribuer
 
@@ -737,7 +737,7 @@ Décrivez l'impact de cette fonctionnalité sur :
 - **GitHub Issues** : Pour les bugs et demandes de fonctionnalités
 - **GitHub Discussions** : Pour les questions générales
 - **Slack** : Pour la communication en temps réel (invitation sur demande)
-- **Email** : dev@smartcity-geneva.ch (pour les questions privées)
+- **Email** : michael@germini.info (pour les questions privées)
 
 ### Réponse Attendue
 

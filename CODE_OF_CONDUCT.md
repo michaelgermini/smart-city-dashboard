@@ -43,7 +43,7 @@ Ce code de conduite s'applique dans tous les espaces du projet, et s'applique é
 
 Les cas de comportement abusif, harcelant ou autrement inacceptable peuvent être signalés en contactant l'équipe du projet à :
 
-- 📧 Email : conduct@smartcity-geneva.ch
+- 📧 Email : michael@germini.info
 - 🐛 Issues : [Signaler un problème](https://github.com/smartcity-geneva/dashboard/issues)
 
 Toutes les plaintes seront examinées et feront l'objet d'une enquête et d'une réponse jugée nécessaire et appropriée aux circonstances. L'équipe du projet est tenue de maintenir la confidentialité concernant le rapporteur d'un incident.

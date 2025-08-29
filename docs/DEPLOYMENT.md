@@ -407,8 +407,8 @@ echo "✅ Tous les services sont opérationnels"
 ## 📞 Support et Maintenance
 
 ### Contacts d'urgence
-- **Équipe DevOps** : devops@smartcity.ch
-- **Support Technique** : support@smartcity.ch
+- **Équipe DevOps** : michael@germini.info
+- **Support Technique** : michael@germini.info
 - **Urgences** : +41 XX XXX XX XX
 
 ### Maintenance programmée

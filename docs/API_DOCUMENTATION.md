@@ -418,9 +418,9 @@ Importez le fichier `docs/postman_collection.json` pour tester tous les endpoint
 ## 📞 Support
 
 Pour des questions sur l'API :
-- 📧 Email : api@smartcity-geneva.ch
+- 📧 Email : michael@germini.info
 - 📖 Documentation : `/docs/API_DOCUMENTATION.md`
-- 🐛 Issues : [GitHub Issues](https://github.com/smartcity-geneva/dashboard/issues)
+- 🐛 Issues : [GitHub Issues](https://github.com/michaelgermini/smart-city-dashboard/issues)
 
 ---
 

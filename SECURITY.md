@@ -10,7 +10,7 @@ Si vous découvrez une vulnérabilité de sécurité dans ce projet, veuillez no
 
 Au lieu de cela, contactez-nous directement :
 
-- 📧 **Email** : security@smartcity-geneva.ch
+- 📧 **Email** : michael@germini.info
 - 🔐 **PGP Key** : [Télécharger la clé PGP](https://github.com/smartcity-geneva/dashboard/security/pgp-key)
 
 ### 📝 Informations à Fournir
@@ -70,7 +70,7 @@ Pour toute question concernant la sécurité :
 
 - 📖 **Documentation** : [SECURITY.md](SECURITY.md)
 - 🐛 **Issues générales** : [GitHub Issues](https://github.com/smartcity-geneva/dashboard/issues)
-- 📧 **Sécurité** : security@smartcity-geneva.ch
+- 📧 **Sécurité** : michael@germini.info
 
 ---
 
