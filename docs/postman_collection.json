@@ -1,0 +1,282 @@
+{
+  "info": {
+    "name": "Smart City Dashboard API",
+    "description": "Collection Postman pour l'API du Dashboard Smart City Genève",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{jwt_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:5000",
+      "type": "string"
+    },
+    {
+      "key": "jwt_token",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Authentification",
+      "item": [
+        {
+          "name": "Connexion",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"password\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "login"]
+            },
+            "description": "Authentification et récupération du token JWT"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const response = pm.response.json();",
+                  "    pm.collectionVariables.set('jwt_token', response.token);",
+                  "    console.log('Token JWT sauvegardé:', response.token);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Trafic",
+      "item": [
+        {
+          "name": "Données trafic actuelles",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/traffic/current",
+              "host": ["{{base_url}}"],
+              "path": ["api", "traffic", "current"]
+            },
+            "description": "Récupère les données de trafic actuelles"
+          }
+        },
+        {
+          "name": "Historique trafic",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/traffic/history?route=a1_bridge&hours=24",
+              "host": ["{{base_url}}"],
+              "path": ["api", "traffic", "history"],
+              "query": [
+                {
+                  "key": "route",
+                  "value": "a1_bridge"
+                },
+                {
+                  "key": "hours",
+                  "value": "24"
+                }
+              ]
+            },
+            "description": "Récupère l'historique du trafic pour une route donnée"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Stationnement",
+      "item": [
+        {
+          "name": "Places disponibles",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/parking/available",
+              "host": ["{{base_url}}"],
+              "path": ["api", "parking", "available"]
+            },
+            "description": "Récupère les places de parking disponibles"
+          }
+        },
+        {
+          "name": "Détails parking",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/parking/parking_centre",
+              "host": ["{{base_url}}"],
+              "path": ["api", "parking", "parking_centre"]
+            },
+            "description": "Récupère les détails d'un parking spécifique"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Transports Publics",
+      "item": [
+        {
+          "name": "Position véhicules",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/transport/vehicles",
+              "host": ["{{base_url}}"],
+              "path": ["api", "transport", "vehicles"]
+            },
+            "description": "Récupère la position des véhicules TPG"
+          }
+        },
+        {
+          "name": "Informations lignes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/transport/lines",
+              "host": ["{{base_url}}"],
+              "path": ["api", "transport", "lines"]
+            },
+            "description": "Récupère les informations sur les lignes de transport"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Alertes",
+      "item": [
+        {
+          "name": "Alertes actives",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/alerts/active",
+              "host": ["{{base_url}}"],
+              "path": ["api", "alerts", "active"]
+            },
+            "description": "Récupère les alertes actives"
+          }
+        },
+        {
+          "name": "Créer alerte",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"traffic\",\n  \"severity\": \"high\",\n  \"title\": \"Congestion importante\",\n  \"description\": \"Trafic dense sur l'autoroute A1\",\n  \"location\": \"Pont du Mont-Blanc\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/alerts",
+              "host": ["{{base_url}}"],
+              "path": ["api", "alerts"]
+            },
+            "description": "Crée une nouvelle alerte"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Météo",
+      "item": [
+        {
+          "name": "Conditions actuelles",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/weather/current",
+              "host": ["{{base_url}}"],
+              "path": ["api", "weather", "current"]
+            },
+            "description": "Récupère les conditions météo actuelles"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Statistiques",
+      "item": [
+        {
+          "name": "Vue d'ensemble",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/stats/overview",
+              "host": ["{{base_url}}"],
+              "path": ["api", "stats", "overview"]
+            },
+            "description": "Récupère les statistiques générales"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Monitoring",
+      "item": [
+        {
+          "name": "État sources données",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/datasources/status",
+              "host": ["{{base_url}}"],
+              "path": ["api", "datasources", "status"]
+            },
+            "description": "Vérifie l'état des sources de données"
+          }
+        },
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/health",
+              "host": ["{{base_url}}"],
+              "path": ["health"]
+            },
+            "description": "Vérification de l'état de santé de l'API"
+          }
+        }
+      ]
+    }
+  ]
+}

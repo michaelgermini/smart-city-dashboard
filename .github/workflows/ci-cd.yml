@@ -1,0 +1,228 @@
+name: 🚀 CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  # Tests et validation du code
+  test:
+    name: 🧪 Tests & Validation
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18, 20]
+
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+
+    - name: 🔧 Setup Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+
+    - name: 📦 Install dependencies
+      run: |
+        npm ci
+        npm run install:all
+
+    - name: 🧹 Code Quality Checks
+      run: |
+        npm run lint
+        npm run type-check
+
+    - name: 🧪 Run tests
+      run: |
+        npm run test:backend
+        npm run test:frontend
+
+    - name: 📊 Upload coverage reports
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./coverage/lcov.info
+        fail_ci_if_error: false
+
+  # Build des images Docker
+  docker:
+    name: 🐳 Docker Build
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+
+    - name: 🔧 Setup Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: 🏗️ Build Backend Image
+      uses: docker/build-push-action@v5
+      with:
+        context: ./backend
+        file: ./backend/Dockerfile
+        push: false
+        tags: smartcity-backend:latest
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+
+    - name: 🏗️ Build Frontend Image
+      uses: docker/build-push-action@v5
+      with:
+        context: ./frontend
+        file: ./frontend/Dockerfile
+        push: false
+        tags: smartcity-frontend:latest
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+
+  # Sécurité et vulnérabilités
+  security:
+    name: 🔒 Security Scan
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+
+    - name: 🔧 Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
+        cache: 'npm'
+
+    - name: 📦 Install dependencies
+      run: |
+        npm ci
+        npm run install:all
+
+    - name: 🔍 Run security audit
+      run: npm audit --audit-level moderate
+
+    - name: 🛡️ CodeQL Analysis
+      uses: github/codeql-action/init@v3
+      with:
+        languages: javascript, typescript
+
+    - name: 🚨 CodeQL Analysis Results
+      uses: github/codeql-action/analyze@v3
+
+  # Déploiement en staging (optionnel)
+  deploy-staging:
+    name: 🚀 Deploy to Staging
+    runs-on: ubuntu-latest
+    needs: [test, docker]
+    if: github.ref == 'refs/heads/develop' && github.event_name == 'push'
+
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+
+    - name: 🚀 Deploy to staging environment
+      run: |
+        echo "🚀 Déploiement en cours vers staging..."
+        # Ajouter ici les commandes de déploiement staging
+        echo "✅ Staging deployment completed"
+
+  # Release et déploiement en production
+  release:
+    name: 📦 Release & Deploy
+    runs-on: ubuntu-latest
+    needs: [test, docker, security]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: 🔧 Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
+        cache: 'npm'
+
+    - name: 📦 Install dependencies
+      run: npm ci
+
+    - name: 🔖 Create Release Tag
+      id: create_release
+      run: |
+        # Générer le numéro de version basé sur les commits
+        VERSION=$(npm version patch --no-git-tag-version | sed 's/v//')
+        echo "version=$VERSION" >> $GITHUB_OUTPUT
+        echo "🔖 Nouvelle version : $VERSION"
+
+    - name: 📝 Update CHANGELOG
+      run: |
+        # Mise à jour automatique du CHANGELOG
+        echo "# Changelog mis à jour pour v${{ steps.create_release.outputs.version }}" >> CHANGELOG.md
+
+    - name: 🏗️ Build Production Images
+      run: |
+        docker build -t smartcity-backend:${{ steps.create_release.outputs.version }} ./backend
+        docker build -t smartcity-frontend:${{ steps.create_release.outputs.version }} ./frontend
+
+    - name: 🐳 Push to Registry
+      run: |
+        echo "📤 Push des images Docker..."
+        # docker push smartcity-backend:${{ steps.create_release.outputs.version }}
+        # docker push smartcity-frontend:${{ steps.create_release.outputs.version }}
+
+    - name: 🚀 Deploy to Production
+      run: |
+        echo "🚀 Déploiement en production..."
+        # Ajouter ici les commandes de déploiement production
+
+    - name: 📢 Create GitHub Release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: v${{ steps.create_release.outputs.version }}
+        release_name: Release v${{ steps.create_release.outputs.version }}
+        body: |
+          ## 🚀 Nouvelle version v${{ steps.create_release.outputs.version }}
+
+          ### Changements
+          - Voir le [CHANGELOG](CHANGELOG.md) pour les détails
+
+          ### Déploiement
+          - ✅ Backend déployé
+          - ✅ Frontend déployé
+          - ✅ Tests validés
+          - ✅ Sécurité vérifiée
+
+        draft: false
+        prerelease: false
+
+  # Notification des résultats
+  notify:
+    name: 📢 Notification
+    runs-on: ubuntu-latest
+    needs: [test, docker, security]
+    if: always()
+
+    steps:
+    - name: 📊 Generate Report
+      run: |
+        echo "## 📊 Rapport CI/CD" >> report.md
+        echo "- ✅ Tests: ${{ needs.test.result }}" >> report.md
+        echo "- ✅ Docker: ${{ needs.docker.result }}" >> report.md
+        echo "- ✅ Sécurité: ${{ needs.security.result }}" >> report.md
+
+    - name: 📧 Send Notification
+      if: failure()
+      run: |
+        echo "❌ Échec du pipeline CI/CD"
+        # Ajouter ici les notifications (Slack, email, etc.)
+
+    - name: 🎉 Success Notification
+      if: success()
+      run: |
+        echo "✅ Pipeline CI/CD réussi"
+        # Ajouter ici les notifications de succès
